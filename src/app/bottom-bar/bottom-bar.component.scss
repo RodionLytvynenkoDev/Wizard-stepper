@@ -1,0 +1,13 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+button {
+    background-color: #57B7AE;
+    padding: 15px;
+    border-radius: 10px;
+    width: 30%;
+    color: #fff;
+}
