@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { goToNextStep, goToPreviousStep, setCurrentStep } from '../state/wizard.actions';
@@ -10,10 +10,9 @@ import { selectByCurrentStep, selectByStepsQuantity } from '../state/wizard.sele
   templateUrl: './bottom-bar.component.html',
   styleUrls: ['./bottom-bar.component.scss'],
 })
-export class BottomBarComponent implements OnInit {
-  public step: number;
-  public steps: number;
-
+export class BottomBarComponent implements OnInit, OnDestroy {
+  public currentStep: number;
+  public stepsQuantity: number;
   public destroy$ = new Subject();
 
   constructor(private store: Store<StepsState>) {}
@@ -22,25 +21,25 @@ export class BottomBarComponent implements OnInit {
     this.store
       .pipe(select(selectByCurrentStep))
       .pipe(takeUntil(this.destroy$))
-      .subscribe((step) => {
-        this.step = step;
+      .subscribe((currentStep) => {
+        this.currentStep = currentStep;
       });
     this.store
       .pipe(select(selectByStepsQuantity))
       .pipe(takeUntil(this.destroy$))
-      .subscribe((steps) => {
-        this.steps = steps;
+      .subscribe((stepsQuantity) => {
+        this.stepsQuantity = stepsQuantity;
       });
   }
 
   public previousStep() {
-    if (this.step > 1) {
+    if (this.currentStep > 1) {
       this.store.dispatch(goToPreviousStep());
     }
   }
 
   public nextStep() {
-    if (this.step < this.steps) {
+    if (this.currentStep < this.stepsQuantity) {
       this.store.dispatch(goToNextStep());
     }
   }

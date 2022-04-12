@@ -11,22 +11,17 @@ import { selectByCurrentStep, selectByStepsArray, selectByStepsQuantity } from '
   styleUrls: ['./top-bar.component.scss'],
 })
 export class TopBarComponent implements OnInit {
-  public stepsArray: Array<number>
   public currentStep$: Observable<number> = this.store.pipe(
     select(selectByCurrentStep)
   );
-
   public stepsArray$: Observable<Array<number>> = this.store.pipe(
     select(selectByStepsArray)
   );
-
   public destroy$ = new Subject();
+  
   constructor(private store: Store<StepsState>) {}
 
   ngOnInit(): void {
-    this.stepsArray$.pipe(takeUntil(this.destroy$)).subscribe((step) => {
-      this.stepsArray = step;
-    });
     this.store.dispatch(setStepsQuantity());
   }
 
