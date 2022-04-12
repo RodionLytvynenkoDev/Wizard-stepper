@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subject, takeUntil } from 'rxjs';
+import { setStepsQuantity } from '../state/wizard.actions';
 import { StepsState } from '../state/wizard.reducer';
-import { selectByStep } from '../state/wizard.selector';
+import { selectByCurrentStep, selectByStepsArray, selectByStepsQuantity } from '../state/wizard.selector';
 
 @Component({
   selector: 'app-top-bar',
@@ -10,16 +11,23 @@ import { selectByStep } from '../state/wizard.selector';
   styleUrls: ['./top-bar.component.scss'],
 })
 export class TopBarComponent implements OnInit {
-  public step: number;
-  public step$: Observable<number> = this.store.pipe(select(selectByStep));
+  public stepsArray: Array<number>
+  public currentStep$: Observable<number> = this.store.pipe(
+    select(selectByCurrentStep)
+  );
+
+  public stepsArray$: Observable<Array<number>> = this.store.pipe(
+    select(selectByStepsArray)
+  );
 
   public destroy$ = new Subject();
   constructor(private store: Store<StepsState>) {}
 
   ngOnInit(): void {
-    this.step$.pipe(takeUntil(this.destroy$)).subscribe((step) => {
-      this.step = step;
+    this.stepsArray$.pipe(takeUntil(this.destroy$)).subscribe((step) => {
+      this.stepsArray = step;
     });
+    this.store.dispatch(setStepsQuantity());
   }
 
   ngOnDestroy() {

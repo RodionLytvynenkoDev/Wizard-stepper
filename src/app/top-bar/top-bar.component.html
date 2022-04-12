@@ -1,8 +1,8 @@
 <div class="container">
   <div class="line"></div>
   <ul class="progressbar">
-    <li [ngClass]="{ active: step === 1 }"></li>
-    <li [ngClass]="{ active: step === 2 }"></li>
-    <li [ngClass]="{ active: step === 3 }"></li>
+    <li
+      *ngFor="let step of (stepsArray$ | async)" [class.active]="(currentStep$ | async) === step+1"
+    ></li>
   </ul>
 </div>

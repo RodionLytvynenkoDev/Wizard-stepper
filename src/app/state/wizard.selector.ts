@@ -3,13 +3,18 @@ import { featureName, StepsState } from './wizard.reducer';
 
 export const selectStyleFeature = createFeatureSelector<StepsState>(featureName);
 
-export const selectByStep = createSelector(
+export const selectByCurrentStep = createSelector(
   selectStyleFeature,
-  (state: StepsState): number => state.step
+  (state: StepsState): number => state.currentStep
 );
 
-export const selectBySteps = createSelector(
+export const selectByStepsQuantity = createSelector(
   selectStyleFeature,
-  (state: StepsState): number => state.steps
+  (state: StepsState): number => state.stepsQuantity
+);
+
+export const selectByStepsArray = createSelector(
+  selectStyleFeature,
+  (state: StepsState): Array<number> => state.stepsArray
 );
 

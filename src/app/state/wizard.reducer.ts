@@ -1,27 +1,40 @@
 import { createReducer, on } from '@ngrx/store';
-import { defineStepAction, defineStepNumberAction } from './wizard.actions';
+import {
+  goToNextStep,
+  goToPreviousStep,
+  setCurrentStep,
+  setStepsQuantity,
+} from './wizard.actions';
 
 export const featureName = 'steps';
 
 export interface StepsState {
-  step: number;
-  steps: number;
+  currentStep: number;
+  stepsQuantity: number;
+  stepsArray: Array<number>;
 }
 
 export const initialState: StepsState = {
-  step: 1,
-  steps: 3,
+  currentStep: 1,
+  stepsQuantity: 3,
+  stepsArray: [],
 };
 
 export const WizardReducer = createReducer(
   initialState,
-  on(defineStepAction, (state, { step }) => {
-    return { ...state, step: step };
+  on(setCurrentStep, (state, { currentStep }) => {
+    return { ...state, currentStep: currentStep };
   }),
-  on(defineStepNumberAction, (state) => {
+  on(goToNextStep, (state) => {
+    return { ...state, currentStep: state.currentStep + 1 };
+  }),
+  on(goToPreviousStep, (state) => {
+    return { ...state, currentStep: state.currentStep - 1 };
+  }),
+    on(setStepsQuantity, (state) => {
     return {
       ...state,
-      steps: 3,
+      stepsArray: [...Array(state.stepsQuantity).keys()],
     };
   })
 );
