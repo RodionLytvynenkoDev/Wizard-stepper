@@ -17,16 +17,11 @@ export class TopBarComponent implements OnInit {
   public stepsArray$: Observable<Array<number>> = this.store.pipe(
     select(selectByStepsArray)
   );
-  public destroy$ = new Subject();
-  
+
   constructor(private store: Store<StepsState>) {}
 
   ngOnInit(): void {
     this.store.dispatch(setStepsQuantity());
   }
 
-  ngOnDestroy() {
-    this.destroy$.next(true);
-    this.destroy$.complete();
-  }
 }
