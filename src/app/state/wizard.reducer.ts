@@ -16,7 +16,7 @@ export interface StepsState {
 
 export const initialState: StepsState = {
   currentStep: 1,
-  stepsQuantity: 3,
+  stepsQuantity: 15,
   stepsArray: [],
 };
 
